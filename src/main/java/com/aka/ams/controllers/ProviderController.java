@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aka.ams.entities.Article;
 import com.aka.ams.entities.Provider;
 import com.aka.ams.services.ProviderService;
 
@@ -21,10 +22,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/provider")
 public class ProviderController {
 
-	@Autowired
-	ProviderService service; // = new ProviderService();
+	
+	ProviderService service; 
 
 	
+	public ProviderController(ProviderService service) {
+		super();
+		this.service = service;
+	}
+
 	@GetMapping("/addGet")
 	public String addGet(Model model)
 	{
@@ -48,7 +54,7 @@ public class ProviderController {
         return "redirect:list";
 	}
 	
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String list(Model model)
 	{
 		List<Provider> res = service.listProvider();
@@ -88,6 +94,20 @@ public class ProviderController {
 		service.addProvider(provider);
 		return"redirect:list";
 	}
+	
+    @GetMapping("show/{id}")
+	public String showProvider(@PathVariable("id") long id, Model model) {
+		Provider provider = service.findProviderById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid provider Id:" + id));
+		List<Article> articles = service.findArticlesByProvider(id);
+		for (Article a : articles)
+			System.out.println("Article = " + a.getLabel());
+		
+		model.addAttribute("articles", articles);
+		model.addAttribute("provider", provider);
+		return "provider/showProvider";
+	}
+
 	
 	
 	

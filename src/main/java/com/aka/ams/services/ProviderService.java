@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aka.ams.repositories.ProviderRepository;
+import com.aka.ams.entities.Article;
 import com.aka.ams.entities.Provider;
 
 @Service
@@ -35,6 +36,11 @@ public class ProviderService {
 	public Optional<Provider> findProviderById(long id)
 	{
 		return providerRepository.findById(id);
+	}
+	
+	public List<Article> findArticlesByProvider(long id)
+	{
+		return providerRepository.findArticlesByProvider(id);
 	}
 
 

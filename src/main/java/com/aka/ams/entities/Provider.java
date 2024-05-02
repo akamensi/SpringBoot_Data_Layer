@@ -3,11 +3,15 @@ package com.aka.ams.entities;
 
 
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -28,6 +32,8 @@ public class Provider {
     @Column(name = "email")
     private String email;
     
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "provider")
+    private List<Article> articles;
 
     public Provider() {}
 
@@ -68,6 +74,17 @@ public class Provider {
 	@Override
 	public String toString() {
 		return "Provider [id=" + id + ", name=" + name + ", address=" + address + ", email=" + email + "]";
+	}
+
+	
+   
+
+	public List<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
 	}
 
 
